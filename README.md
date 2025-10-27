@@ -3,23 +3,23 @@
 Așik este un joc tradițional turkmen cu o istorie de mii de ani. Denumirea „așik” se referă la osul articulației unei oi sau capre, pregătit pentru joc.
 Acest joc a fost transmis din generație în generație și a fost folosit de copii pentru a-și dezvolta agilitatea, atenția, răbdarea și spiritul de fair-play. De-a lungul timpului, au apărut diferite variante ale jocului, fiecare cu reguli specifice, păstrate în cultura și tradițiile poporului turkmen.
 
-Așik — Trei talpe este o versiune digitală a jocului tradițional turkmen „Așik”. Jocul este popular printre copii și dezvoltă agilitatea, atenția, răbdarea și precizia.
+_Așik — Trei talpe_ este o versiune digitală a jocului tradițional turkmen „Așik”. Jocul este popular printre copii și dezvoltă agilitatea, atenția, răbdarea și precizia.
 
-Descrierea jocului
+## Descrierea jocului
 
-În varianta Trei talpe, fiecare jucător are propriul Kenek — un așik obișnuit, uneori grevat cu plumb pentru a facilita aruncarea.
+În varianta Trei talpe, fiecare jucător are propriul **Kenek** — un așik obișnuit, uneori grevat cu plumb pentru a facilita aruncarea.
 
 Reguli principale:
 
-Jucătorii așază așikurile într-un șir lung.
+- Jucătorii așază așikurile într-un șir lung.
 
-Pe rând, fiecare jucător aruncă Kenek-ul spre șirul de așikuri.
+- Pe rând, fiecare jucător aruncă Kenek-ul spre șirul de așikuri.
 
-Dacă Kenek-ul împinge un așik pe o distanță egală cu trei talpe, jucătorul îl ia pentru sine.
+- Dacă Kenek-ul împinge un așik pe o distanță egală cu trei talpe, jucătorul îl ia pentru sine.
 
-Dacă nu reușește să atingă această distanță, Kenek-ul este pus înapoi în șir, iar rândul trece la următorul jucător.
+- Dacă nu reușește să atingă această distanță, Kenek-ul este pus înapoi în șir, iar rândul trece la următorul jucător.
 
-Jocul continuă până când toți jucătorii își aruncă Kenek-urile, iar câștigătorul este cel care adună cele mai multe așikuri.
+- Jocul continuă până când toți jucătorii își aruncă Kenek-urile, iar câștigătorul este cel care adună cele mai multe așikuri.
 
 ### Folosiți template-ul corespunzător grupei voastre!
 
