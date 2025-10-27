@@ -1,4 +1,5 @@
-#Așik este un joc tradițional turkmen cu o istorie de mii de ani. Denumirea „așik” se referă la osul articulației unei oi sau capre, pregătit pentru joc.
+#Așik
+Așik este un joc tradițional turkmen cu o istorie de mii de ani. Denumirea „așik” se referă la osul articulației unei oi sau capre, pregătit pentru joc.
 Acest joc a fost transmis din generație în generație și a fost folosit de copii pentru a-și dezvolta agilitatea, atenția, răbdarea și spiritul de fair-play. De-a lungul timpului, au apărut diferite variante ale jocului, fiecare cu reguli specifice, păstrate în cultura și tradițiile poporului turkmen.
 
 Așik — Trei talpe este o versiune digitală a jocului tradițional turkmen „Așik”. Jocul este popular printre copii și dezvoltă agilitatea, atenția, răbdarea și precizia.
