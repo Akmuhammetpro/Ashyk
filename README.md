@@ -11,16 +11,11 @@ _Așik — Trei talpe_ este o versiune digitală a jocului tradițional turkmen 
 
 Reguli principale:
 
-- Jucătorii așază așikurile într-un șir lung.
-
-- Pe rând, fiecare jucător aruncă Kenek-ul spre șirul de așikuri.
-
-- Dacă Kenek-ul împinge un așik pe o distanță egală cu trei talpe, jucătorul îl ia pentru sine.
-
-- Dacă nu reușește să atingă această distanță, Kenek-ul este pus înapoi în șir, iar rândul trece la următorul jucător.
-
-- Jocul continuă până când toți jucătorii își aruncă Kenek-urile, iar câștigătorul este cel care adună cele mai multe așikuri.
-
+- **Jucătorii așază așikurile într-un șir lung.**
+- **Pe rând, fiecare jucător aruncă Kenek-ul spre șirul de așikuri.**
+- **Dacă Kenek-ul împinge un așik pe o distanță egală cu trei talpe, jucătorul îl ia pentru sine.**
+- **Dacă nu reușește să atingă această distanță, Kenek-ul este pus înapoi în șir, iar rândul trece la următorul jucător.**
+- **Jocul continuă până când toți jucătorii își aruncă Kenek-urile, iar câștigătorul este cel care adună cele mai multe așikuri.**
 ### Folosiți template-ul corespunzător grupei voastre!
 
 | Laborant  | Link template                                |
