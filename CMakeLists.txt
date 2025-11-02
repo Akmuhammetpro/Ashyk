@@ -49,7 +49,6 @@ include(cmake/CopyHelper.cmake)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(Ashyk
-    src/main.cpp
     src/Ashyk.cpp
     src/Player.cpp
     src/ScoreBoard.cpp
