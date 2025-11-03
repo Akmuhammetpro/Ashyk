@@ -1,0 +1,22 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install CMake
+        run: sudo apt-get update && sudo apt-get install -y cmake
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        run: cmake --build build --config Debug
+      - name: Test Input
+        run: |
+          echo "3" > tastatura.txt
+          echo "10" >> tastatura.txt
+          echo "20" >> tastatura.txt
+          echo "30" >> tastatura.txt
+          ./build/Ashyk < tastatura.txt

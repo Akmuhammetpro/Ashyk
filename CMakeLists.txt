@@ -15,6 +15,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include_directories(include)
+
 include(cmake/Options.cmake)
 include(cmake/CompilerFlags.cmake)
 include(cmake/CopyHelper.cmake)
@@ -49,9 +51,9 @@ include(cmake/CopyHelper.cmake)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(Ashyk
-    src/Ashyk.cpp
+    src/Asik.cpp
     src/Player.cpp
-    src/ScoreBoard.cpp
+    src/Throw.cpp
     src/Game.cpp
     main.cpp
 )
