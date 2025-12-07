@@ -44,21 +44,21 @@ void Player::addPoints(int delta) {
 }
 
 void Player::collectAsik(const Asik& a) {
-    // Кладём ПОЛИМОРФНУЮ копию ашыка
     collected.push_back(a.clone());
 
-    // Проверяем тип через dynamic_cast (пример из Tema 2)
     if (dynamic_cast<const BonusAsik*>(&a)) {
         std::cout << "  [Bonus asyk collected!]\n";
     } else if (dynamic_cast<const PenaltyAsik*>(&a)) {
         std::cout << "  [Penalty asyk collected...]\n";
+    } else if (dynamic_cast<const GoldenAsik*>(&a)) {
+        std::cout << "  [Golden asyk collected!!!]\n";
     } else {
         std::cout << "  [Normal asyk collected]\n";
     }
 
-    // Применяем игровой эффект
     a.applyEffect(*this);
 }
+
 
 
 void Player::makeThrow() {

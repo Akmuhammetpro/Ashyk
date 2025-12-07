@@ -12,7 +12,7 @@ Throw Throw::simulate() {
     // решаем, какой тип ашыка создать
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> type_dis(0, 2);  // 0 = обычный, 1 = бонус, 2 = штраф
+    std::uniform_int_distribution<> type_dis(0, 3);  // 0 = Asik, 1 = Bonus, 2 = Penalty, 3 = Golden
     std::uniform_int_distribution<> value_dis(1, 4);
     std::uniform_real_distribution<> dist_dis(0.0, 5.0);
 
@@ -21,13 +21,15 @@ Throw Throw::simulate() {
 
     std::unique_ptr<Asik> p;
 
-    if (type == 0) {
-        p = std::make_unique<Asik>(val);          // обычный
-    } else if (type == 1) {
-        p = std::make_unique<BonusAsik>(val);     // бонусный
-    } else {
-        p = std::make_unique<PenaltyAsik>(val);   // штрафной
-    }
+  if (type == 0) {
+    p = std::make_unique<Asik>(val);          // обычный
+} else if (type == 1) {
+    p = std::make_unique<BonusAsik>(val);     // бонусный
+} else if (type == 2) {
+    p = std::make_unique<PenaltyAsik>(val);   // штрафной
+} else {
+    p = std::make_unique<GoldenAsik>(val);    // золотой
+}
 
     double d = dist_dis(gen);
     return Throw(std::move(p), d);

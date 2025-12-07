@@ -75,3 +75,19 @@ std::unique_ptr<Asik> PenaltyAsik::clone() const {
 void PenaltyAsik::printDetails(std::ostream& os) const {
     os << "PenaltyAsik(" << value << ")";
 }
+// ===== GoldenAsik =====
+
+GoldenAsik::GoldenAsik(int val) : Asik(val) {}
+
+void GoldenAsik::applyEffect(Player& j) const {
+    // супер-бонус: например, value * 5 пунктов
+    j.addPoints(value * 5);
+}
+
+std::unique_ptr<Asik> GoldenAsik::clone() const {
+    return std::make_unique<GoldenAsik>(*this);
+}
+
+void GoldenAsik::printDetails(std::ostream& os) const {
+    os << "GoldenAsik(" << value << ")";
+}

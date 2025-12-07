@@ -56,3 +56,13 @@ public:
 protected:
     void printDetails(std::ostream& os) const override;
 };
+class GoldenAsik : public Asik {
+public:
+    explicit GoldenAsik(int val = 1);
+
+    void applyEffect(Player& j) const override;
+    std::unique_ptr<Asik> clone() const override;
+
+protected:
+    void printDetails(std::ostream& os) const override;
+};
