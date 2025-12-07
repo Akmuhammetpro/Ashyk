@@ -4,29 +4,62 @@
 int Player::calcAsikPoints() const {
     int sum = 0;
     for (const auto& a : collected)
-        sum += a.getValue();
+        sum += a->getValue();     // теперь a — unique_ptr<Asik>
     return sum;
 }
 
 Player::Player(const std::string& n) : name(n) {}
-Player::Player(const Player& o) : name(o.name), collected(o.collected), points(o.points) {}
 
-Player& Player::operator=(Player o) {
-    swap(*this, o);
+// Копирующий конструктор: deep-copy с clone()
+Player::Player(const Player& o) : name(o.name), points(o.points) {
+    collected.clear();
+    collected.reserve(o.collected.size());
+    for (const auto& a : o.collected) {
+        if (a) {
+            collected.push_back(a->clone()); // полиморфное копирование
+        }
+    }
+}
+
+// operator= с deep-copy
+Player& Player::operator=(const Player& o) {
+    if (this == &o) return *this;
+
+    name = o.name;
+    points = o.points;
+
+    collected.clear();
+    collected.reserve(o.collected.size());
+    for (const auto& a : o.collected) {
+        if (a) {
+            collected.push_back(a->clone());
+        }
+    }
+
     return *this;
 }
 
-void swap(Player& a, Player& b) noexcept {
-    using std::swap;
-    swap(a.name, b.name);
-    swap(a.collected, b.collected);
-    swap(a.points, b.points);
+void Player::addPoints(int delta) {
+    points += delta;
 }
 
 void Player::collectAsik(const Asik& a) {
-    collected.push_back(a);
-    points += 10;
+    // Кладём ПОЛИМОРФНУЮ копию ашыка
+    collected.push_back(a.clone());
+
+    // Проверяем тип через dynamic_cast (пример из Tema 2)
+    if (dynamic_cast<const BonusAsik*>(&a)) {
+        std::cout << "  [Bonus asyk collected!]\n";
+    } else if (dynamic_cast<const PenaltyAsik*>(&a)) {
+        std::cout << "  [Penalty asyk collected...]\n";
+    } else {
+        std::cout << "  [Normal asyk collected]\n";
+    }
+
+    // Применяем игровой эффект
+    a.applyEffect(*this);
 }
+
 
 void Player::makeThrow() {
     Throw t = Throw::simulate();
@@ -51,7 +84,7 @@ std::ostream& operator<<(std::ostream& os, const Player& p) {
     os << p.name << " (points:" << p.points << ", ashyks:[";
     for (size_t i = 0; i < p.collected.size(); ++i) {
         if (i > 0) os << ",";
-        os << p.collected[i].getValue();
+        os << p.collected[i]->getValue();
     }
     os << "], Total:" << p.getTotalScore() << ")";
     return os;
