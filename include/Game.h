@@ -16,14 +16,16 @@ public:
     explicit Game(const std::vector<std::string>& names);
     void playRound();
     Player& getWinner();
+
     // static функции доступа к maxRounds
     static void setMaxRounds(int n);   // может бросить InvalidConfigError
     static int getMaxRounds();
 
     friend std::ostream& operator<<(std::ostream& os, const Game& g);
 
+    // cppcheck-suppress unusedFunction   // used in graphical UI (main_raylib.cpp)
     const std::vector<Player>& getPlayers() const { return players; }
-    int getRound() const { return round; }
 
-    friend std::ostream& operator<<(std::ostream& os, const Game& g);
+    // cppcheck-suppress unusedFunction   // used in graphical UI (main_raylib.cpp)
+    int getRound() const { return round; }
 };
