@@ -39,6 +39,7 @@ const Asik& Throw::getKenek() const {
     return *kenek;  // возвращаем ссылку на базовый Asik
 }
 
+// cppcheck-suppress unusedFunction   // kept for future UI/logic, not used in this TU
 double Throw::getDistance() const {
     return distance;
 }
