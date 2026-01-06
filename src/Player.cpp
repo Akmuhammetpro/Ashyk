@@ -3,25 +3,23 @@
 
 int Player::calcAsikPoints() const {
     int sum = 0;
-    for (const auto& a : collected)
-        sum += a->getValue();     // теперь a — unique_ptr<Asik>
+    for (const auto& a : collected) {
+        sum += a->getValue();
+    }
     return sum;
 }
 
 Player::Player(const std::string& n) : name(n) {}
 
-// Копирующий конструктор: deep-copy с clone()
 Player::Player(const Player& o) : name(o.name), points(o.points) {
-    collected.clear();
     collected.reserve(o.collected.size());
     for (const auto& a : o.collected) {
         if (a) {
-            collected.push_back(a->clone()); // полиморфное копирование
+            collected.push_back(a->clone());
         }
     }
 }
 
-// operator= с deep-copy
 Player& Player::operator=(const Player& o) {
     if (this == &o) return *this;
 
@@ -35,7 +33,6 @@ Player& Player::operator=(const Player& o) {
             collected.push_back(a->clone());
         }
     }
-
     return *this;
 }
 
@@ -44,31 +41,25 @@ void Player::addPoints(int delta) {
 }
 
 void Player::collectAsik(const Asik& a) {
+    // store a deep-copy
     collected.push_back(a.clone());
 
-    if (dynamic_cast<const BonusAsik*>(&a)) {
-        std::cout << "  [Bonus asyk collected!]\n";
-    } else if (dynamic_cast<const PenaltyAsik*>(&a)) {
-        std::cout << "  [Penalty asyk collected...]\n";
-    } else if (dynamic_cast<const GoldenAsik*>(&a)) {
-        std::cout << "  [Golden asyk collected!!!]\n";
-    } else {
-        std::cout << "  [Normal asyk collected]\n";
-    }
+    // no dynamic_cast needed: polymorphic name comes from virtual function
+    std::cout << "  [" << a.kindName() << " asyk collected]\n";
 
+    // apply gameplay effect
     a.applyEffect(*this);
 }
-
-
 
 void Player::makeThrow() {
     Throw t = Throw::simulate();
     std::cout << name << " throws: " << t;
+
     if (t.isSuccessful()) {
-        std::cout << " → Yes! Got it!\n";
+        std::cout << " \xE2\x86\x92 Yes! Got it!\n";
         collectAsik(t.getKenek());
     } else {
-        std::cout << " → Miss the shot.\n";
+        std::cout << " \xE2\x86\x92 Miss the shot.\n";
     }
 }
 

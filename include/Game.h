@@ -1,24 +1,32 @@
 #pragma once
-#include "Player.h"
 #include "Errors.h"
-#include <vector>
+#include "Player.h"
 #include <iostream>
+#include <vector>
 
+/// @brief Controls the match: stores players, current round, and configuration.
 class Game {
 private:
     std::vector<Player> players;
     int round = 0;
 
-    // static атрибут: максимум разрешённых раундов
+    /// @brief Maximum allowed rounds.
     static int maxRounds;
 
 public:
+    /// @brief Creates a game from a list of player names.
     explicit Game(const std::vector<std::string>& names);
+
+    /// @brief Plays one round (may throw MaxRoundsReachedError).
     void playRound();
+
+    /// @brief Returns the player with the best total score.
     Player& getWinner();
 
-    // static функции доступа к maxRounds
-    static void setMaxRounds(int n);   // может бросить InvalidConfigError
+    /// @brief Sets the maximum number of rounds (must be > 0).
+    static void setMaxRounds(int n);   // may throw InvalidConfigError
+
+    /// @brief Returns the maximum number of rounds.
     static int getMaxRounds();
 
     friend std::ostream& operator<<(std::ostream& os, const Game& g);
