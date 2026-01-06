@@ -24,6 +24,8 @@ env:
   BIN_DIR: "bin"
   BUILD_DIR: "build"
   EXT_DIR: "ext"
+  TIMESTAMP: ""
+  ZIP_NAME: ""
 
 defaults:
   run:
@@ -40,6 +42,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5.0.0
 
+      - name: Install Linux deps (raylib/GLFW)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+          libx11-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libxext-dev \
+          libgl1-mesa-dev
+
       - name: Run cppcheck
         uses: ./.github/actions/cppcheck
 
@@ -52,6 +67,19 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5.0.0
+
+      - name: Install Linux deps (raylib/GLFW)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+          libx11-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libxext-dev \
+          libgl1-mesa-dev
 
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy
@@ -68,6 +96,7 @@ jobs:
     env:
       CC: ${{ matrix.c }}
       CXX: ${{ matrix.cxx }}
+      ASAN_NAME: ${{ matrix.asan_name || '' }}
       VSCMD_SKIP_SENDTELEMETRY: 1
       MINGW_VER: "13.3.0posix-11.0.1-msvcrt-r1/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64msvcrt-11.0.1-r1.7z"
 
@@ -135,7 +164,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           echo "TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)" >> ${GITHUB_ENV}
-          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed 's|/|_|')" >> ${GITHUB_ENV}
+          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ env.ASAN_NAME }}" | sed 's|/|_|')" >> ${GITHUB_ENV}
 
           if [[ $(gh repo view "${{ github.repository }}" --json isPrivate -q ".isPrivate") == "true" ]]; then
             echo "PRIVATE_REPO=true" >> ${GITHUB_ENV}
@@ -143,27 +172,18 @@ jobs:
             echo "Public repo"
           fi
 
-      - name: Install Linux deps for raylib (X11/GLFW)
+      - name: Install Linux deps (raylib/GLFW)
         if: runner.os == 'Linux'
         run: |
-          set -euxo pipefail
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            libx11-dev \
-            libxrandr-dev \
-            libxinerama-dev \
-            libxcursor-dev \
-            libxi-dev \
-            libxext-dev \
-            libxrender-dev \
-            libgl1-mesa-dev \
-            libglu1-mesa-dev \
-            mesa-common-dev \
-            xorg-dev
-
-          # Debug-пруф, что реально установилось
-          test -f /usr/include/X11/Xlib.h
-          dpkg -l | grep -E "libx11-dev|libxrandr-dev"
+          sudo apt-get install -y \
+          libx11-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libxext-dev \
+          libgl1-mesa-dev
 
 
       - name: Install packages (toolchain/sanitizers)
