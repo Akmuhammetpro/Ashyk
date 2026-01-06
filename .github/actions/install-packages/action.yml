@@ -9,15 +9,19 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          libx11-dev \
-          libxrandr-dev \
-          libxinerama-dev \
-          libxcursor-dev \
-          libxi-dev \
-          libgl1-mesa-dev \
-          libglu1-mesa-dev
+       sudo apt-get update
+       sudo apt-get install -y --no-install-recommends \
+       libx11-dev \
+       libxrandr-dev \
+       libxinerama-dev \
+       libxcursor-dev \
+       libxi-dev \
+       libxext-dev \
+       libxrender-dev \
+       libgl1-mesa-dev \
+       libglu1-mesa-dev \
+       mesa-common-dev \
+       xorg-dev
 
     # Also see https://github.com/actions/runner-images/discussions/9446#discussioncomment-8668538
     - name: Install Clang ${{ matrix.clang_ver }}
