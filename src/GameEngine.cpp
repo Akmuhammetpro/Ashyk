@@ -105,6 +105,7 @@ void GameEngine::handleChoice(int choice) {
     }
 }
 
+// cppcheck-suppress unusedFunction   // used from main.cpp (console version)
 void GameEngine::run() {
     while (running) {
         printMenu();
@@ -121,8 +122,6 @@ void GameEngine::run() {
             handleChoice(choice);
         } catch (const GameError& e) {
             std::cerr << "[Game error] " << e.what() << "\n";
-        } catch (const std::exception& e) {
-            std::cerr << "[Unexpected error] " << e.what() << "\n";
         }
     }
 
