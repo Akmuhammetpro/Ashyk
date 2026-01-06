@@ -1,29 +1,33 @@
-name: 'Install packages'
-description: 'Install required packages'
+name: "Install packages"
+description: "Install required packages"
 
 runs:
   using: "composite"
   steps:
-    # Common Linux dependencies
     - name: Install Linux dependencies (raylib)
       if: runner.os == 'Linux'
       shell: bash
       run: |
-       sudo apt-get update
-       sudo apt-get install -y --no-install-recommends \
-       libx11-dev \
-       libxrandr-dev \
-       libxinerama-dev \
-       libxcursor-dev \
-       libxi-dev \
-       libxext-dev \
-       libxrender-dev \
-       libgl1-mesa-dev \
-       libglu1-mesa-dev \
-       mesa-common-dev \
-       xorg-dev
+        set -euxo pipefail
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          libx11-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libxext-dev \
+          libxrender-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          mesa-common-dev
 
-    # Also see https://github.com/actions/runner-images/discussions/9446#discussioncomment-8668538
+        # Optional but often helpful on Ubuntu runners
+        sudo apt-get install -y --no-install-recommends xorg-dev
+
+        # quick sanity check (so we SEE it in logs)
+        dpkg -l | grep -E "libx11-dev|libxrandr-dev" || true
+
     - name: Install Clang ${{ matrix.clang_ver }}
       if: runner.os == 'Linux' && matrix.runs_msan == true
       uses: nick-fields/retry@v3
@@ -33,20 +37,23 @@ runs:
         max_attempts: 3
         retry_on: error
         command: |
+          set -euxo pipefail
           wget https://apt.llvm.org/llvm.sh
           chmod +x ./llvm.sh
           sudo ./llvm.sh ${{ matrix.clang_ver }}
 
     - name: Install libc++ (Linux Clang ${{ matrix.clang_ver }})
-      shell: bash
       if: runner.os == 'Linux' && matrix.runs_msan == true
+      shell: bash
       run: |
-        sudo apt-get install --no-install-recommends \
+        set -euxo pipefail
+        sudo apt-get install -y --no-install-recommends \
           libc++-${{ matrix.clang_ver }}-dev \
           libc++abi-${{ matrix.clang_ver }}-dev
 
     - name: Install valgrind
-      shell: bash
       if: runner.os == 'Linux' && matrix.runs_valgrind == true
+      shell: bash
       run: |
-        sudo apt-get install --no-install-recommends valgrind
+        set -euxo pipefail
+        sudo apt-get install -y --no-install-recommends valgrind
