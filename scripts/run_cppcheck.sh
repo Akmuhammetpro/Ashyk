@@ -3,7 +3,7 @@
 cppcheck --enable=all \
     --inline-suppr \
     --project="${BUILD_DIR:-build}"/compile_commands.json \
-    --file-filter='.*(/src/|/headers/|/main\.cpp$)' \
+    --file-filter='(^|.*/)(src|headers)/|(^|.*/)main\.cpp$' \
     -i"${BUILD_DIR:-build}" --suppress="*:${BUILD_DIR:-build}/*" \
     -i"${EXT_DIR:-ext}" --suppress="*:${EXT_DIR:-ext}/*" \
     --suppress=missingIncludeSystem \
