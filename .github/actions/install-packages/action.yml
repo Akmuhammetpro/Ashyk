@@ -9,21 +9,19 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-       sudo apt-get update
-       sudo apt-get install -y \
-       libx11-dev \
-       libxrandr-dev \
-       libxinerama-dev \
-       libxcursor-dev \
-       libxi-dev \
-       libgl1-mesa-dev \
-       libglu1-mesa-dev
-
+        sudo apt-get update
+        sudo apt-get install -y \
+          libx11-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev
 
     # Also see https://github.com/actions/runner-images/discussions/9446#discussioncomment-8668538
     - name: Install Clang ${{ matrix.clang_ver }}
       if: runner.os == 'Linux' && matrix.runs_msan == true
-      # renovate: datasource=github-tags depName=nick-fields/retry versioning=loose
       uses: nick-fields/retry@v3
       with:
         shell: bash
@@ -39,14 +37,12 @@ runs:
       shell: bash
       if: runner.os == 'Linux' && matrix.runs_msan == true
       run: |
-        # sudo apt-get update
-        sudo apt-get install --no-install-recommends libc++-${{ matrix.clang_ver }}-dev libc++abi-${{ matrix.clang_ver }}-dev
+        sudo apt-get install --no-install-recommends \
+          libc++-${{ matrix.clang_ver }}-dev \
+          libc++abi-${{ matrix.clang_ver }}-dev
 
     - name: Install valgrind
       shell: bash
       if: runner.os == 'Linux' && matrix.runs_valgrind == true
       run: |
-        # sudo apt-get update
         sudo apt-get install --no-install-recommends valgrind
-        
-
