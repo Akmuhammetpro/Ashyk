@@ -1,17 +1,21 @@
 #include "Game.h"
+#include "Errors.h"
 #include <algorithm>
-#include "Errors.h"  
+#include <iostream>
 
-// Инициализация static поля
+/// Static field initialization
 int Game::maxRounds = 10;
 
 Game::Game(const std::vector<std::string>& names) {
     if (names.empty()) {
-        // пример: исключение из конструктора
+        // Example: throw from constructor
         throw InvalidPlayerCountError();
     }
-    for (const auto& n : names)
+
+    players.reserve(names.size());
+    for (const auto& n : names) {
         players.emplace_back(n);
+    }
 }
 
 void Game::playRound() {
@@ -21,12 +25,16 @@ void Game::playRound() {
 
     ++round;
     std::cout << "\n=== Round " << round << " ===\n";
-    for (auto& p : players)
+
+    for (auto& p : players) {
         p.makeThrow();
+    }
 }
 
 Player& Game::getWinner() {
-    return *std::max_element(players.begin(), players.end(),
+    return *std::max_element(
+        players.begin(),
+        players.end(),
         [](const Player& a, const Player& b) {
             return a.getTotalScore() < b.getTotalScore();
         });
@@ -34,7 +42,7 @@ Player& Game::getWinner() {
 
 void Game::setMaxRounds(int n) {
     if (n <= 0) {
-        throw InvalidConfigError("Number of rounds must be positive");
+        throw InvalidConfigError("Number of rounds must be positive.");
     }
     maxRounds = n;
 }
@@ -45,7 +53,8 @@ int Game::getMaxRounds() {
 
 std::ostream& operator<<(std::ostream& os, const Game& g) {
     os << "Game (round " << g.round << " / max " << Game::getMaxRounds() << "):\n";
-    for (const auto& p : g.players)
+    for (const auto& p : g.players) {
         os << "  " << p << "\n";
+    }
     return os;
 }

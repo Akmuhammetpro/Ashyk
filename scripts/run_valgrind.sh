@@ -1,29 +1,13 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-INPUT_FILE=${INPUT_FILE:-tastatura.txt}
-RUN_INTERACTIVE=${RUN_INTERACTIVE:-false}
-BUILD_DIR=${BUILD_DIR:-build}
+BUILD_DIR="$1"
+
+# Если CI не передал EXECUTABLE_NAME, используем Ashyk
 EXECUTABLE_NAME=${EXECUTABLE_NAME:-Ashyk}
 
-if [[ -n "$1" ]]; then
-    BIN_DIR="$1"
-elif [[ -d "install_dir/bin" ]]; then
-    BIN_DIR="install_dir/bin"
-else
-    BIN_DIR="${BUILD_DIR}"
-fi
-
-run_valgrind() {
-    # remove --show-leak-kinds=all (and --track-origins=yes) if there are many leaks in external libs
 valgrind \
   --leak-check=full \
   --show-leak-kinds=all \
   --error-exitcode=1 \
-  "$BUILD_DIR/$EXECUTABLE_NAME"
-}
-
-if [[ "${RUN_INTERACTIVE}" = true ]]; then
-    run_valgrind
-else
-    cat < "${INPUT_FILE}" | tr -d '\r' | run_valgrind
-fi
+  "./${BUILD_DIR}/${EXECUTABLE_NAME}"

@@ -11,20 +11,20 @@ GameEngine::GameEngine()
 {
     // Configure max rounds with validation
     while (true) {
-        int maxR = readInt("Introduceti numarul maxim de runde (ex: 5): ");
+        int maxR = readInt("Enter the maximum number of rounds (e.g., 5): ");
         try {
             Game::setMaxRounds(maxR);
             break;
         } catch (const InvalidConfigError& e) {
-            std::cerr << "[Configuratie] " << e.what() << "\n";
+            std::cerr << "[Config] " << e.what() << "\n";
         }
     }
 
-    cout << "Jocul a fost configurat cu succes.\n";
+    cout << "Game configured successfully.\n";
 }
 
 vector<string> GameEngine::readPlayerNames() const {
-    int n = readInt("Introduceti numarul de jucatori (>=1): ");
+    int n = readInt("Enter number of players (>= 1): ");
     if (n <= 0) {
         throw InvalidPlayerCountError();
     }
@@ -32,9 +32,9 @@ vector<string> GameEngine::readPlayerNames() const {
     vector<string> names;
     names.reserve(n);
 
-    cout << "Introduceti numele jucatorilor:\n";
+    cout << "Enter player names:\n";
     for (int i = 0; i < n; ++i) {
-        cout << "  Jucator " << (i + 1) << ": ";
+        cout << "  Player " << (i + 1) << ": ";
         string name;
         cin >> name;
         names.push_back(name);
@@ -52,18 +52,18 @@ int GameEngine::readInt(const string& prompt) const {
         }
         cin.clear();
         cin.ignore(10000, '\n');
-        cout << "Valoare invalida, incercati din nou.\n";
+        cout << "Invalid value, try again.\n";
     }
 }
 
 void GameEngine::printMenu() const {
-    cout << "\n======= MENIU JOC AȘYK =======\n";
-    cout << "1. Joaca o runda\n";
-    cout << "2. Joaca toate rundele ramase pana la maxim\n";
-    cout << "3. Afiseaza scorurile curente\n";
-    cout << "4. Afiseaza castigatorul si iesi\n";
-    cout << "0. Iesire fara castigator\n";
-    cout << "Alegeti o optiune: ";
+    cout << "\n======= ASHYK MENU =======\n";
+    cout << "1. Play one round\n";
+    cout << "2. Play all remaining rounds until max\n";
+    cout << "3. Show current scores\n";
+    cout << "4. Show winner and exit\n";
+    cout << "0. Exit\n";
+    cout << "Choose an option: ";
 }
 
 void GameEngine::handleChoice(int choice) {
@@ -73,12 +73,11 @@ void GameEngine::handleChoice(int choice) {
         break;
 
     case 2: {
-        // Play until the max round limit is reached
         while (true) {
             try {
                 game.playRound();
             } catch (const MaxRoundsReachedError& e) {
-                std::cerr << "[Limita runde] " << e.what() << "\n";
+                std::cerr << "[Round limit] " << e.what() << "\n";
                 break;
             }
         }
@@ -91,8 +90,8 @@ void GameEngine::handleChoice(int choice) {
 
     case 4:
         cout << "\n" << game << "\n";
-        cout << "Castigator: " << game.getWinner().getName()
-             << " — " << game.getWinner().getTotalScore() << " puncte!\n";
+        cout << "Winner: " << game.getWinner().getName()
+             << " — " << game.getWinner().getTotalScore() << " points!\n";
         running = false;
         break;
 
@@ -101,7 +100,7 @@ void GameEngine::handleChoice(int choice) {
         break;
 
     default:
-        cout << "Optiune invalida.\n";
+        cout << "Invalid option.\n";
         break;
     }
 }
@@ -114,22 +113,18 @@ void GameEngine::run() {
         if (!(cin >> choice)) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Valoare invalida.\n";
+            cout << "Invalid value.\n";
             continue;
         }
 
         try {
             handleChoice(choice);
-        } catch (const InvalidConfigError& e) {
-            std::cerr << "[Configuratie invalida] " << e.what() << "\n";
-        } catch (const InvalidPlayerCountError& e) {
-            std::cerr << "[Jucatori invalizi] " << e.what() << "\n";
         } catch (const GameError& e) {
-            std::cerr << "[Eroare de joc] " << e.what() << "\n";
+            std::cerr << "[Game error] " << e.what() << "\n";
         } catch (const std::exception& e) {
-            std::cerr << "[Eroare neasteptata] " << e.what() << "\n";
+            std::cerr << "[Unexpected error] " << e.what() << "\n";
         }
     }
 
-    cout << "\nIesire din joc.\n";
+    cout << "\nExiting game.\n";
 }
