@@ -5,14 +5,20 @@ runs:
   using: "composite"
   steps:
     # Common Linux dependencies
-    - name: Install Linux Dependencies
-      shell: bash
+    - name: Install Linux dependencies (raylib)
       if: runner.os == 'Linux'
+      shell: bash
       run: |
-        sudo apt-get update
-        sudo apt-get install ninja-build
-        # https://github.com/llvm/llvm-project/issues/78354
-        sudo sysctl vm.mmap_rnd_bits=28
+       sudo apt-get update
+       sudo apt-get install -y \
+       libx11-dev \
+       libxrandr-dev \
+       libxinerama-dev \
+       libxcursor-dev \
+       libxi-dev \
+       libgl1-mesa-dev \
+       libglu1-mesa-dev
+
 
     # Also see https://github.com/actions/runner-images/discussions/9446#discussioncomment-8668538
     - name: Install Clang ${{ matrix.clang_ver }}
@@ -42,3 +48,5 @@ runs:
       run: |
         # sudo apt-get update
         sudo apt-get install --no-install-recommends valgrind
+        
+
