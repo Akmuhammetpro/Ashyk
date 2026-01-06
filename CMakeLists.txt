@@ -14,6 +14,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories(headers)
 
+if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  message(STATUS "Disabling raylib on macOS with GCC (GLFW/Cocoa requires clang).")
+  set(ASHYK_ENABLE_RAYLIB OFF CACHE BOOL "" FORCE)
+endif()
 
 if(ASHYK_ENABLE_RAYLIB)
   include(FetchContent)
@@ -39,6 +43,7 @@ add_executable(Ashyk
     src/GameEngine.cpp
     main.cpp
 )
+set(ASHYK_TARGETS Ashyk)
 
 if(ASHYK_ENABLE_RAYLIB)
   add_executable(AshykRaylib
@@ -50,15 +55,11 @@ if(ASHYK_ENABLE_RAYLIB)
       src/main_raylib.cpp
   )
   target_link_libraries(AshykRaylib PRIVATE raylib)
-endif()
-
-if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  message(WARNING "Disabling raylib on macOS with GCC (GLFW/Cocoa requires clang).")
-  set(ASHYK_ENABLE_RAYLIB OFF CACHE BOOL "" FORCE)
+  list(APPEND ASHYK_TARGETS AshykRaylib)
 endif()
 
 # Apply the same compiler flags/sanitizers to both executables
-set_compiler_flags(RUN_SANITIZERS TRUE TARGET_NAMES Ashyk AshykRaylib)
+set_compiler_flags(RUN_SANITIZERS TRUE TARGET_NAMES ${ASHYK_TARGETS})
 
 ###############################################################################
 

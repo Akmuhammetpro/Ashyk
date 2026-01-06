@@ -53,7 +53,11 @@ jobs:
           libxcursor-dev \
           libxi-dev \
           libxext-dev \
-          libgl1-mesa-dev
+          libxrender-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          mesa-common-dev \
+          xorg-dev
 
       - name: Run cppcheck
         uses: ./.github/actions/cppcheck
@@ -79,7 +83,11 @@ jobs:
           libxcursor-dev \
           libxi-dev \
           libxext-dev \
-          libgl1-mesa-dev
+          libxrender-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          mesa-common-dev \
+          xorg-dev
 
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy
@@ -184,7 +192,11 @@ jobs:
           libxcursor-dev \
           libxi-dev \
           libxext-dev \
-          libgl1-mesa-dev
+          libxrender-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          mesa-common-dev \
+          xorg-dev
 
 
       - name: Install packages (toolchain/sanitizers)
