@@ -52,6 +52,11 @@ if(ASHYK_ENABLE_RAYLIB)
   target_link_libraries(AshykRaylib PRIVATE raylib)
 endif()
 
+if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  message(WARNING "Disabling raylib on macOS with GCC (GLFW/Cocoa requires clang).")
+  set(ASHYK_ENABLE_RAYLIB OFF CACHE BOOL "" FORCE)
+endif()
+
 # Apply the same compiler flags/sanitizers to both executables
 set_compiler_flags(RUN_SANITIZERS TRUE TARGET_NAMES Ashyk AshykRaylib)
 
