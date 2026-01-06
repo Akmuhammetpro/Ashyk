@@ -57,3 +57,7 @@ runs:
       run: |
         set -euxo pipefail
         sudo apt-get install -y --no-install-recommends valgrind
+        ls -la /usr/include/X11 || true
+        dpkg -l | grep -E "libx11-dev|libxrandr-dev" || true
+
+

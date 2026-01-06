@@ -33,16 +33,12 @@ jobs:
   cppcheck:
     name: "Cppcheck"
     runs-on: ubuntu-22.04
-    timeout-minutes: 10
+    timeout-minutes: 5
     env:
       CPPCHECK_VER: "2.18.1"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5.0.0
-
-      #  IMPORTANT: raylib needs X11 deps even for configure steps used by tools
-      - name: Install packages
-        uses: ./.github/actions/install-packages
 
       - name: Run cppcheck
         uses: ./.github/actions/cppcheck
@@ -56,10 +52,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5.0.0
-
-      # IMPORTANT: raylib needs X11 deps even for configure steps used by tools
-      - name: Install packages
-        uses: ./.github/actions/install-packages
 
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy
@@ -77,7 +69,6 @@ jobs:
       CC: ${{ matrix.c }}
       CXX: ${{ matrix.cxx }}
       VSCMD_SKIP_SENDTELEMETRY: 1
-
       MINGW_VER: "13.3.0posix-11.0.1-msvcrt-r1/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64msvcrt-11.0.1-r1.7z"
 
     strategy:
@@ -117,6 +108,11 @@ jobs:
             cmake_flags: "-DUSE_ASAN=OFF"
             runs_asan: false
 
+          - os: macos-14
+            c: gcc-13
+            cxx: g++-13
+            name: "macOS 14 GCC 13"
+
           - os: windows-2022
             c: cl
             cxx: cl
@@ -139,16 +135,38 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           echo "TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)" >> ${GITHUB_ENV}
-
           echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed 's|/|_|')" >> ${GITHUB_ENV}
 
           if [[ $(gh repo view "${{ github.repository }}" --json isPrivate -q ".isPrivate") == "true" ]]; then
-              echo "PRIVATE_REPO=true" >> ${GITHUB_ENV}
+            echo "PRIVATE_REPO=true" >> ${GITHUB_ENV}
           else
-              echo "Public repo"
+            echo "Public repo"
           fi
 
-      - name: Install packages
+      e
+      - name: Install Linux deps for raylib (X11/GLFW)
+        if: runner.os == 'Linux'
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libx11-dev \
+            libxrandr-dev \
+            libxinerama-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libxext-dev \
+            libxrender-dev \
+            libgl1-mesa-dev \
+            libglu1-mesa-dev \
+            mesa-common-dev \
+            xorg-dev
+
+          # Debug-пруф, что реально установилось
+          test -f /usr/include/X11/Xlib.h
+          dpkg -l | grep -E "libx11-dev|libxrandr-dev"
+
+      - name: Install packages (toolchain/sanitizers)
         uses: ./.github/actions/install-packages
 
       - name: Configure CMake

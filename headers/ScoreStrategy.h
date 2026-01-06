@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-#include <memory>
 
 /// @brief Strategy interface for computing a player's score.
 ///        Used by the Raylib UI to show alternative scoring rules.

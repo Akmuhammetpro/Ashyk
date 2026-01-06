@@ -3,7 +3,7 @@ set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 
 project(Ashyk)
-
+option(ASHYK_ENABLE_RAYLIB "Build raylib graphical target" ON)
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing executable name in this file
 set(MAIN_PROJECT_NAME "oop")
 set(MAIN_EXECUTABLE_NAME Ashyk)
@@ -15,14 +15,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include_directories(headers)
 
 
-include(FetchContent)
-
-FetchContent_Declare(
-    raylib
-    GIT_REPOSITORY https://github.com/raysan5/raylib.git
-    GIT_TAG        5.0
-)
-FetchContent_MakeAvailable(raylib)
+if(ASHYK_ENABLE_RAYLIB)
+  include(FetchContent)
+  FetchContent_Declare(
+      raylib
+      GIT_REPOSITORY https://github.com/raysan5/raylib.git
+      GIT_TAG        5.0
+  )
+  FetchContent_MakeAvailable(raylib)
+endif()
 
 include(cmake/Options.cmake)
 include(cmake/CompilerFlags.cmake)
@@ -39,16 +40,17 @@ add_executable(Ashyk
     main.cpp
 )
 
-add_executable(AshykRaylib
-    src/Asik.cpp
-    src/Player.cpp
-    src/Throw.cpp
-    src/Game.cpp
-    src/GameEngine.cpp
-    src/main_raylib.cpp
-)
-
-target_link_libraries(AshykRaylib PRIVATE raylib)
+if(ASHYK_ENABLE_RAYLIB)
+  add_executable(AshykRaylib
+      src/Asik.cpp
+      src/Player.cpp
+      src/Throw.cpp
+      src/Game.cpp
+      src/GameEngine.cpp
+      src/main_raylib.cpp
+  )
+  target_link_libraries(AshykRaylib PRIVATE raylib)
+endif()
 
 # Apply the same compiler flags/sanitizers to both executables
 set_compiler_flags(RUN_SANITIZERS TRUE TARGET_NAMES Ashyk AshykRaylib)
