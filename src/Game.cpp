@@ -1,5 +1,7 @@
 #include "Game.h"
 #include <algorithm>
+#include "Errors.h"  
+
 // Инициализация static поля
 int Game::maxRounds = 10;
 
@@ -14,8 +16,7 @@ Game::Game(const std::vector<std::string>& names) {
 
 void Game::playRound() {
     if (round >= maxRounds) {
-        // пример: ошибка конфигурации (слишком много раундов)
-        throw InvalidConfigError("It has reached the maximum number of rounds");
+        throw MaxRoundsReachedError();
     }
 
     ++round;
