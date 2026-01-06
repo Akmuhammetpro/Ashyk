@@ -143,7 +143,6 @@ jobs:
             echo "Public repo"
           fi
 
-      e
       - name: Install Linux deps for raylib (X11/GLFW)
         if: runner.os == 'Linux'
         run: |
@@ -165,6 +164,7 @@ jobs:
           # Debug-пруф, что реально установилось
           test -f /usr/include/X11/Xlib.h
           dpkg -l | grep -E "libx11-dev|libxrandr-dev"
+
 
       - name: Install packages (toolchain/sanitizers)
         uses: ./.github/actions/install-packages
