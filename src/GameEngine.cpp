@@ -11,9 +11,8 @@ GameEngine::GameEngine()
 {
     // Configure max rounds with validation
     while (true) {
-        int maxR = readInt("Enter the maximum number of rounds (e.g., 5): ");
         try {
-            Game::setMaxRounds(maxR);
+            Game::setMaxRounds(readInt("Enter the maximum number of rounds (e.g., 5): "));
             break;
         } catch (const InvalidConfigError& e) {
             std::cerr << "[Config] " << e.what() << "\n";
