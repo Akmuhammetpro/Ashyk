@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "RaylibGameEngine.h"
 #include <iostream>
 
 int main() {
@@ -6,8 +7,13 @@ int main() {
     std::cout << "\n=== AŞYK ===\n";
 
     try {
-        GameEngine engine;
-        engine.run();
+        // Вариант 1: графика
+        RaylibGameEngine engine;
+        engine.Run();
+
+        // Вариант 2: консоль (если нужно)
+        // GameEngine engine;
+        // engine.run();
     }
     catch (const InvalidConfigError& e) {
         std::cerr << "\n[Invalid Config] " << e.what() << "\n";

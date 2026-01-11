@@ -41,9 +41,14 @@ add_executable(Ashyk
     src/Throw.cpp
     src/Game.cpp
     src/GameEngine.cpp
+    src/RaylibGameEngine.cpp
     main.cpp
 )
 set(ASHYK_TARGETS Ashyk)
+
+if(ASHYK_ENABLE_RAYLIB)
+  target_link_libraries(Ashyk PRIVATE raylib)
+endif()
 
 if(ASHYK_ENABLE_RAYLIB)
   add_executable(AshykRaylib
@@ -70,3 +75,7 @@ if(APPLE)
 endif()
 
 copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME Ashyk)
+copy_files(DIRECTORY assets COPY_TO_DESTINATION TARGET_NAME Ashyk)
+if(ASHYK_ENABLE_RAYLIB)
+  copy_files(DIRECTORY assets COPY_TO_DESTINATION TARGET_NAME AshykRaylib)
+endif()
