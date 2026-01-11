@@ -27,7 +27,7 @@ static float GetGroundAnimSeconds() {
 }
 
 static float GetAshikScale() {
-    return 0.1f; // 10x smaller; tweak as needed
+    return 0.2f; // 2x bigger than before; tweak as needed
 }
 
 static std::vector<Rectangle> DetectFrameRects(const char* spritePath) {
@@ -45,13 +45,19 @@ static std::vector<Rectangle> DetectFrameRects(const char* spritePath) {
 
     const int w = image.width;
     const int h = image.height;
+    const int minPixels = (h / 50 < 6) ? 6 : (h / 50);
+    const int minRunWidth = (w / 100 < 12) ? 12 : (w / 100);
+
     std::vector<bool> colHas(w, false);
     for (int x = 0; x < w; ++x) {
+        int count = 0;
         for (int y = 0; y < h; ++y) {
             if (pixels[y * w + x].a != 0) {
-                colHas[x] = true;
-                break;
+                count++;
             }
+        }
+        if (count >= minPixels) {
+            colHas[x] = true;
         }
     }
 
@@ -74,7 +80,7 @@ static std::vector<Rectangle> DetectFrameRects(const char* spritePath) {
         runs.push_back({ start, w - 1 });
     }
 
-    const int minGap = 2;
+    const int minGap = 4;
     std::vector<Run> merged;
     for (const auto& run : runs) {
         if (!merged.empty() && run.start - merged.back().end - 1 <= minGap) {
@@ -85,29 +91,17 @@ static std::vector<Rectangle> DetectFrameRects(const char* spritePath) {
     }
 
     std::vector<Rectangle> frames;
-    if (!merged.empty()) {
-        std::vector<int> starts(merged.size());
-        std::vector<int> ends(merged.size());
-        starts[0] = 0;
-        for (size_t i = 1; i < merged.size(); ++i) {
-            const int boundary = (merged[i - 1].end + merged[i].start) / 2;
-            ends[i - 1] = boundary;
-            starts[i] = boundary + 1;
+    for (const auto& run : merged) {
+        const int width = run.end - run.start + 1;
+        if (width < minRunWidth) {
+            continue;
         }
-        ends.back() = w - 1;
-
-        for (size_t i = 0; i < starts.size(); ++i) {
-            const int width = ends[i] - starts[i] + 1;
-            if (width <= 0) {
-                continue;
-            }
-            frames.push_back(Rectangle{
-                static_cast<float>(starts[i]),
-                0.0f,
-                static_cast<float>(width),
-                static_cast<float>(h)
-            });
-        }
+        frames.push_back(Rectangle{
+            static_cast<float>(run.start),
+            0.0f,
+            static_cast<float>(width),
+            static_cast<float>(h)
+        });
     }
 
     UnloadImageColors(pixels);
