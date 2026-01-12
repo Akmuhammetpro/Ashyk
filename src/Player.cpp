@@ -44,8 +44,14 @@ void Player::collectAsik(const Asik& a) {
     // store a deep-copy
     collected.push_back(a.clone());
 
-    // no dynamic_cast needed: polymorphic name comes from virtual function
     std::cout << "  [" << a.kindName() << " asyk collected]\n";
+    if (dynamic_cast<const BonusAsik*>(&a)) {
+        std::cout << "  [bonus effect]\n";
+    } else if (dynamic_cast<const PenaltyAsik*>(&a)) {
+        std::cout << "  [penalty effect]\n";
+    } else if (dynamic_cast<const GoldenAsik*>(&a)) {
+        std::cout << "  [golden effect]\n";
+    }
 
     // apply gameplay effect
     a.applyEffect(*this);
