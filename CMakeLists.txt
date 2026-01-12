@@ -54,12 +54,13 @@ add_executable(Ashyk
     src/Throw.cpp
     src/Game.cpp
     src/GameEngine.cpp
-    src/RaylibGameEngine.cpp
     main.cpp
 )
 set(ASHYK_TARGETS Ashyk)
 
 if(ASHYK_ENABLE_RAYLIB)
+  target_sources(Ashyk PRIVATE src/RaylibGameEngine.cpp)
+  target_compile_definitions(Ashyk PRIVATE ASHYK_ENABLE_RAYLIB)
   target_link_libraries(Ashyk PRIVATE raylib)
 endif()
 

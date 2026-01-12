@@ -1,5 +1,7 @@
 #include "GameEngine.h"
+#if defined(ASHYK_ENABLE_RAYLIB)
 #include "RaylibGameEngine.h"
+#endif
 #include <iostream>
 
 int main() {
@@ -14,8 +16,13 @@ int main() {
         GameEngine engine;
         engine.run();
         #else
+        #if defined(ASHYK_ENABLE_RAYLIB)
         RaylibGameEngine engine;
         engine.Run();
+        #else
+        GameEngine engine;
+        engine.run();
+        #endif
         #endif
 
         // Вариант 2: консоль (если нужно)
