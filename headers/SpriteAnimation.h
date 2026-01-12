@@ -6,7 +6,7 @@ class SpriteAnimation {
 public:
     SpriteAnimation() = default;
 
-    void Init(Texture2D texture, int frameCount, float fps, bool loop = false) {
+    void Init(const Texture2D& texture, int frameCount, float fps, bool loop = false) {
         texture_ = texture;
         frames_.clear();
         frameCount_ = (frameCount <= 0 ? 1 : frameCount);
@@ -20,7 +20,7 @@ public:
         frameHeight_ = texture_.height;
     }
 
-    void Init(Texture2D texture, const std::vector<Rectangle>& frames, float fps, bool loop = false) {
+    void Init(const Texture2D& texture, const std::vector<Rectangle>& frames, float fps, bool loop = false) {
         texture_ = texture;
         frames_ = frames;
         frameCount_ = frames_.empty() ? 1 : static_cast<int>(frames_.size());
@@ -66,10 +66,6 @@ public:
 
     int GetFrame() const {
         return currentFrame_;
-    }
-
-    int GetFrameCount() const {
-        return frameCount_;
     }
 
     int GetFrameWidth() const {

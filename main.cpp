@@ -3,13 +3,20 @@
 #include <iostream>
 
 int main() {
+#ifdef _WIN32
     system("chcp 65001 > nul");
+#endif
     std::cout << "\n=== AŞYK ===\n";
 
     try {
         // Вариант 1: графика
+        #ifdef GITHUB_ACTIONS
+        GameEngine engine;
+        engine.run();
+        #else
         RaylibGameEngine engine;
         engine.Run();
+        #endif
 
         // Вариант 2: консоль (если нужно)
         // GameEngine engine;

@@ -216,7 +216,6 @@ struct AshikThrow {
             const float duration = (flightDuration <= 0.0f) ? 0.01f : flightDuration;
             float t = (duration <= 0.0f) ? 1.0f : (flightTime / duration);
             if (t >= 1.0f) {
-                t = 1.0f;
                 inFlight = false;
                 onGround = true;
                 pos = end;
@@ -282,7 +281,7 @@ struct SilverAshik {
     float groundTime = 0.0f;
     float scale = 1.0f;
 
-    void Init(Texture2D tex, const std::vector<Rectangle>& frames, float fps, float inScale) {
+    void Init(const Texture2D& tex, const std::vector<Rectangle>& frames, float fps, float inScale) {
         texture = tex;
         scale = inScale;
         if (frames.size() >= 2) {
