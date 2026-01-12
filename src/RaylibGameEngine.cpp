@@ -17,6 +17,7 @@ void RaylibGameEngine::InitGameFromConfigOrDefaults() {
     // game_.Start();
 }
 
+// cppcheck-suppress unusedFunction
 void RaylibGameEngine::Run() {
     InitWindow(1280, 720, "Ashyk (Raylib)");
     SetTargetFPS(60);

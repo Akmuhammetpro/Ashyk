@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
-set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.10)
 
 
 project(Ashyk)
@@ -26,7 +26,20 @@ if(ASHYK_ENABLE_RAYLIB)
       GIT_REPOSITORY https://github.com/raysan5/raylib.git
       GIT_TAG        5.0
   )
-  FetchContent_MakeAvailable(raylib)
+  FetchContent_GetProperties(raylib)
+  if(NOT raylib_POPULATED)
+    FetchContent_Populate(raylib)
+    set(raylib_cmake "${raylib_SOURCE_DIR}/CMakeLists.txt")
+    if(EXISTS "${raylib_cmake}")
+      file(READ "${raylib_cmake}" raylib_cmake_contents)
+      string(REGEX REPLACE "cmake_minimum_required\\(VERSION[ \t]+[0-9.]+\\)"
+                           "cmake_minimum_required(VERSION 3.10)"
+                           raylib_cmake_contents
+                           "${raylib_cmake_contents}")
+      file(WRITE "${raylib_cmake}" "${raylib_cmake_contents}")
+    endif()
+  endif()
+  add_subdirectory("${raylib_SOURCE_DIR}" "${raylib_BINARY_DIR}")
 endif()
 
 include(cmake/Options.cmake)

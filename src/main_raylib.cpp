@@ -223,7 +223,7 @@ struct AshikThrow {
                 return;
             }
 
-            const float arc = GetThrowArcHeight() * std::sinf(t * 3.14159265f);
+            const float arc = GetThrowArcHeight() * std::sin(t * 3.14159265f);
             pos.x = start.x + (end.x - start.x) * t;
             pos.y = start.y + (end.y - start.y) * t - arc;
             return;
